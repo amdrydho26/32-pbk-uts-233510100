@@ -1,34 +1,38 @@
 <script setup>
 
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 
 const categories = ref([
   {id: 1, name: "Belanja"},
   {id: 2, name: "Olahraga"}
 ]);
 
-const items = ref([
-  { id: 1, name: 'Item 1' },
-  { id: 2, name: 'Item 2' },
-  { id: 3, name: 'Item 3' }
-]);
+let isAddCat = ref(false);
+let addCatClass = ref('addCat');
+const inCat = useTemplateRef('inputCategory');
+let addCatInput = ref('');
 
-const showInputCat = ref(false);
-
-function showInput (){
-  showInputCat.value =! showInputCat.value;
+function showAddCat(){
+  if (addCatClass.value == 'addCat'){
+    addCatClass.value = 'addCatActive';
+    inCat.value.focus();
+  } else {
+    addCatClass.value = 'addCat';
+    addCatInput.value = "";
+  }
+  
+  isAddCat.value =! isAddCat.value;
 }
 
-let inputCategory = ref("");
+function addCat(){
+  const addCatData = ref({
+    id: (categories.value.length + 1),
+    name: addCatInput.value
+  });
 
-function addCategory(){
-  const inCat = {
-    id: (categories.value.length + 1), 
-    name: inputCategory.value
-  }
-  categories.value.push(inCat);
-  inputCategory.value = "";
-  showInputCat.value = false;
+  categories.value.push(addCatData.value);
+  addCatInput.value = "";
+  showAddCat();
 }
 
 </script>
@@ -59,9 +63,10 @@ function addCategory(){
 
       <!-- Add Category -->
       <div>
-        <button @click="showInput" class="bottom-btn"> <i v-if="showInputCat == false" class="bi bi-chevron-up"></i><i v-if="showInputCat == true" class="bi bi-chevron-down"></i>Tambah Kategori Baru </button>
-        <div v-if="showInputCat" class="bottom-btn">
-          <input type="text" v-model="inputCategory"><button @click="addCategory" style="border: none; background-color: transparent; margin-right: 0;"><i class="bi bi-check"></i></button>
+        <button @click="showAddCat" class="bottom-btn" :class="addCatClass"> <i v-if="isAddCat == false" class="bi bi-chevron-up"></i><i v-if="isAddCat == true" class="bi bi-chevron-down"></i>Tambah Kategori Baru </button>
+        <div class="bottom-btn">
+          <input v-model="addCatInput" ref="inputCategory" aria-label="Nama Kategori Baru" placeholder="Nama Kategori Baru" type="text"/>
+          <button @click="addCat" type="button"><i class="bi bi-check-lg"></i></button>
         </div>
       </div>
    </nav>

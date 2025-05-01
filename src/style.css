@@ -49,11 +49,14 @@ body, html {
   .sidebar .nav-link:hover {
     background-color: #E5E6E6;
   }
-  .active {
-    background-color: red; /* Warna saat ditekan */
-    color: yellow;
+  .sidebar .addCat {
+    transform: translateY(57px);
+    transition: transform 0.5s ease
   }
-  
+  .sidebar .addCatActive {
+    transform: translateY(0);
+    transition: transform 0.5s ease
+  }
   .sidebar .bottom-btn {
     background-color: #E3E4E4;
     color: #000;
@@ -72,6 +75,27 @@ body, html {
   .sidebar .bottom-btn i {
     font-size: 1.2rem;
     margin: 0 5px;
+  }
+  .sidebar .bottom-btn input {
+    background-color: #dcdcdc;
+    border: none;
+    border-radius: 5px;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    color: #7a7a7a;
+    margin-bottom: 0.8rem;
+    resize: none;
+  }
+  .sidebar .bottom-btn button {
+    background-color: #4a4a4a;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 3px;
+    padding: 0.15rem;
+    margin-bottom: 0.8rem;
+    margin-left: 5px;
+    width: 100%;
   }
 
 /* TASK */
