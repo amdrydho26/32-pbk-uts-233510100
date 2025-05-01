@@ -1,1 +1,193 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('./assets/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  }
+  
+/* GENERAL */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f4f2;
+  }
 
+/* CATEGORY */
+  .sidebar {
+    background-color: #EFEFEF;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+  }
+  .sidebar .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    background-color: #E3E4E4;
+    padding-bottom: 15px;
+    padding-top: 18px;
+    padding-left: 1rem;
+  }
+  .sidebar .logo img {
+    width: 125px; 
+    height: auto; 
+    margin: -40px 0;
+  }
+
+  .sidebar .nav-link {
+    color: #000;
+    font-size: 17px;
+    font-weight: 600;
+    height: 50px;
+    margin-left: 1rem;
+    margin-top: 4px;
+    width: 89%;
+  }
+  .sidebar .nav-link:hover {
+    background-color: #E5E6E6;
+  }
+  .active {
+    background-color: red; /* Warna saat ditekan */
+    color: yellow;
+  }
+  
+  .sidebar .bottom-btn {
+    background-color: #E3E4E4;
+    color: #000;
+    font-size: 17px;
+    font-weight: 500;
+    border: none;
+    border-radius: 0;
+    height: 57px;
+    padding: 0rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+
+  }
+  .sidebar .bottom-btn i {
+    font-size: 1.2rem;
+    margin: 0 5px;
+  }
+
+/* TASK */
+  .main-content {
+    background-color: #f0f4f2;
+    height: 100vh;
+    padding: 1.5rem 2rem;
+    overflow-y: auto;
+  }
+  /* Header */
+  .main-content h2 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .main-content .header-icons {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .main-content .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  /* Task */
+  .task-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+  }
+  .task-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .task-list li label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 1rem;
+  }
+  .task-list li label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+  .task-list li label.completed {
+    text-decoration: line-through;
+    color: #000;
+  }
+  .task-list li .trash-icon {
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #000;
+  }
+
+  /* Completed Task */
+  .completed-header {
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 1rem;
+  }
+  .completed-header i {
+    font-size: 1.2rem;
+  }
+
+/* CREATE UPDATE TASK */
+  .add-task-section {
+    background-color: #f7f7f7;
+    height: 100vh;
+    padding: 1.5rem 1.5rem 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+  }
+  .add-task-section h5 {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  .add-task-section input,
+  .add-task-section textarea {
+    background-color: #dcdcdc;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: #7a7a7a;
+    margin-bottom: 1rem;
+    resize: none;
+  }
+  .add-task-section input::placeholder,
+  .add-task-section textarea::placeholder {
+    color: #a9a9a9;
+  }
+  .add-task-section textarea {
+    height: 100px;
+  }
+  .add-task-section button {
+    background-color: #4a4a4a;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 3px;
+    padding: 0.75rem;
+    width: 100%;
+  }
