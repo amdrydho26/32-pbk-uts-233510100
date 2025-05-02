@@ -1,12 +1,19 @@
 <script setup>
 
-import { ref, useTemplateRef } from 'vue';
-
-const categories = ref([
-  {id: 1, name: "Belanja"},
-  {id: 2, name: "Olahraga"}
+import { computed, ref, useTemplateRef } from 'vue';
+// DATA
+let categories = ref([
+  {id: 1, name: "Belanja", active: false},
+  {id: 2, name: "Olahraga", active: false}
 ]);
 
+const tasks = ref([
+  {id: 1, name: "Beras", category: "Belanja", done: false},
+  {id: 2, name: "Sabun", category: "Belanja", done: false},
+  {id: 3, name: "Tisu", category: "Belanja", done: true}
+])
+
+// CATEGORY
 let isAddCat = ref(false);
 let addCatClass = ref('addCat');
 const inCat = useTemplateRef('inputCategory');
@@ -27,7 +34,8 @@ function showAddCat(){
 function addCat(){
   const addCatData = ref({
     id: (categories.value.length + 1),
-    name: addCatInput.value
+    name: addCatInput.value,
+    active: false
   });
 
   categories.value.push(addCatData.value);
@@ -35,16 +43,29 @@ function addCat(){
   showAddCat();
 }
 
+function activeCategory(category){
+  console.info("Active");
+}
+
+// TASK
+
+const complatedTasks = computed(()=>{
+  return tasks.value.filter((data) => data.done == true)
+})
+
 </script>
 
 <template>
 
   <div class="container-fluid d-flex p-0">
 
-    <!-- CATEGORY -->
+    <!-- C A T E G O R Y -->
+
     <nav class="sidebar d-flex flex-column col-12 col-md-3 col-lg-2">
       <div>
+
         <!-- Logo -->
+
         <div class="logo">
           <a href="">
             <img src="./assets/Logo01.png">
@@ -52,16 +73,19 @@ function addCat(){
         </div>
 
         <!-- Category -->
-        <div class="">
-          <select class="nav-link">
-            <option value="all" selected disabled>Semua Kategori</option>
-            <option :value="category.name" v-for="category in categories" :key="category.id">{{ category.name }}</option>
-          </select>
+
+        <div class="category">
+            <ul>
+              <li v-for="category in categories" :key="category.id" @click="activeCategory(category.id)">
+                <button>{{ category.name }}</button>
+              </li>
+            </ul>
         </div>
 
       </div>
 
       <!-- Add Category -->
+
       <div>
         <button @click="showAddCat" class="bottom-btn" :class="addCatClass"> <i v-if="isAddCat == false" class="bi bi-chevron-up"></i><i v-if="isAddCat == true" class="bi bi-chevron-down"></i>Tambah Kategori Baru </button>
         <div class="bottom-btn">
@@ -71,39 +95,47 @@ function addCat(){
       </div>
    </nav>
 
-   <!-- TASK -->
+   <!-- T A S K -->
+
     <main class="main-content col-12 col-md-6 col-lg-7">
+
       <!-- Header -->
+
       <div class="header">
-        <h2>Tugasku</h2>
+
+        <h1>Tugasku</h1>
         <div class="header-icons">
-          <i class="fas fa-plus" title="Tambah Tugas Baru"></i>
-          <i class="fas fa-trash-alt" title="Hapus Tugas"></i>
+          <i class="bi bi-plus" title="Tambah Tugas Baru"></i>
         </div>
-      </div>
-      <!-- Task -->
-      <ul class="task-list">
-        <li>
-          <label><input type="checkbox"/>Tugas</label>
-          <i class="fas fa-trash-alt trash-icon"></i>
-        </li>
-        <li>
-          <label><input type="checkbox"/>Tugas</label>
-          <i class="fas fa-trash-alt trash-icon"></i>
-        </li>
-      </ul>
-      <!-- Completed Task -->
-      <div aria-controls="completed-tasks" aria-expanded="true" class="completed-header" role="button" tabindex="0">
-        <strong>Tugas Selesai</strong>
-        <i class="fas fa-chevron-down"></i>
+
       </div>
 
-      <ul class="task-list" id="completed-tasks">
-        <li>
-          <label class="completed"><input checked="" type="checkbox"/>Tugas Selesai</label>
-          <i class="fas fa-trash-alt trash-icon"></i>
-        </li>
-      </ul>
+      <!-- Task -->
+
+      <div class="task">
+        <ul class="task-list">
+          <li v-for="task in tasks" :key="task.id">
+            <label :class="{ done: task.done }"><input type="checkbox" v-model="task.done" />{{ task.name }}</label>
+            <button><i class="bi bi-x" title="Hapus Tugas"></i></button>
+          </li>
+        </ul>
+
+        <!-- Completed Task -->
+
+        <div class="completed-header">
+          <p>Tugas Selesai</p>
+          <div class="header-icons">
+            <i class="bi bi-chevron-down"></i>
+          </div>
+        </div>
+
+        <ul class="task-list">
+          <li v-for="complatedTask in complatedTasks" :key="complatedTask.id" style="opacity: 50%;">
+            <label :class="{ done: complatedTask.done }"><input type="checkbox" v-model="complatedTask.done" />{{ complatedTask.name }}</label>
+            <button><i class="bi bi-x" title="Hapus Tugas"></i></button>
+          </li>
+        </ul>
+      </div>
 
     </main>
 
