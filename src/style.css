@@ -1,8 +1,3 @@
-@font-face {
-    font-family: 'Inter';
-    src: url('./assets/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
-}
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 /* ANIMATION */
 
@@ -23,6 +18,14 @@
   } to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes notificationIn {
+  from {
+    transform: translateY(200%) scale(1);
+  } to {
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -264,18 +267,19 @@
   .add-task-section {
     background-color: #f7f7f7;
     height: 100vh;
-    padding: 1.5rem 1.5rem 2rem 1.5rem;
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: space-between;
+    overflow: hidden;
   }
-  .add-task-section h5 {
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 1rem;
+  .add-task-section p {
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+    margin-top: 0.5rem;
   }
-  .add-task-section input,
-  .add-task-section textarea {
+  .add-task-section .add-task input,
+  .add-task-section .add-task textarea {
     background-color: #dcdcdc;
     border: none;
     border-radius: 5px;
@@ -284,12 +288,13 @@
     color: #7a7a7a;
     margin-bottom: 1rem;
     resize: none;
+    width: 100%;
   }
-  .add-task-section input::placeholder,
-  .add-task-section textarea::placeholder {
+  .add-task-section .add-task input::placeholder,
+  .add-task-section .add-task textarea::placeholder {
     color: #a9a9a9;
   }
-  .add-task-section textarea {
+  .add-task-section .add-task textarea {
     height: 100px;
   }
   .add-task-section button {
@@ -300,4 +305,14 @@
     border-radius: 3px;
     padding: 0.75rem;
     width: 100%;
+  }
+
+  .add-task-section .notif-hide {
+    visibility: hidden;
+    transition: all 1s ease;
+  }
+
+  .add-task-section .notif-show {
+    visibility: visible;
+    animation: notificationIn 0.5s ease;
   }

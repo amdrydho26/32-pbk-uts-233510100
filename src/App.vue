@@ -43,19 +43,33 @@ function addCat(){
     name: addCatInput.value
   });
 
-  categories.value.push(addCatData.value);
-  addCatInput.value = "";
-  showAddCat();
+  if (addCatInput.value != ''){
+    categories.value.push(addCatData.value);
+    showNotif(`Berhasil Menambah Kategori Baru <b>${addCatInput.value}</b>`);
+    addCatInput.value = "";
+    activeCategory.value = addCatInput.value;
+    showAddCat();
+  } else {
+    console.info("Nama Kategori Tidak Boleh Kosong");
+  }
+
 }
 
 function removeCategory(cat){
+  let taskDeletedCount = 0;
+  for (let task of tasks.value){
+    if (task.category == cat.name){
+      taskDeletedCount++;
+    }
+  }
   tasks.value = tasks.value.filter((tasks) => tasks.category !== cat.name);
   categories.value = categories.value.filter((categories) => categories !== cat);
+  showNotif(`Berhasil Menghapus Kategori <b>${cat.name}</b>,<br> <b>${taskDeletedCount}</b> Tugas Dihapus`);
 }
 
 // CONNECT TASK & CATEGORY
 
-let activeCategory = ref('');
+let activeCategory = ref(categories.value[0].name);
 
 const filteredTasks = computed(() => {
   return tasks.value.filter((tasks) => tasks.category == activeCategory.value);
@@ -71,13 +85,58 @@ const unComplatedFilteredTasks = computed(()=>{
   return filteredTasks.value.filter((filteredTasks) => filteredTasks.done == false)
 });
 
-function removeTask(task){
-  return tasks.value = tasks.value.filter((tasks) => tasks !== task);
-}
 
 let showComplatedTask = ref(true);
 
+// ADD TASK
 
+const taskTitle = ref('');
+const taskDescript = ref('');
+
+function addTask(){
+  const data = {
+    id: (tasks.value.length + 1), 
+    name: taskTitle.value, 
+    descript: taskDescript.value, 
+    category: activeCategory.value, 
+    done: false
+  };
+  
+  if (taskTitle.value != '' ){
+    tasks.value.push(data);
+    showNotif(`Berhasil Menambah Tugas Baru <b>${taskTitle.value}</b>`);
+    taskTitle.value = '';
+    taskDescript.value = '';
+  } else {
+    console.info("Nama Tidak Boleh Kosong")
+  }
+  
+}
+
+const inputTask = useTemplateRef('inputTask');
+
+function addTaskFocus(){
+  inputTask.value.focus();
+}
+
+// DELETE TASK
+
+function removeTask(task){
+  tasks.value = tasks.value.filter((tasks) => tasks !== task);
+  showNotif(`Berhasil Menghapus Sebuah Tugas <b>${task.name}</b>`);
+}
+// NOTIF
+
+let notifClass = ref('notif-hide');
+let messege = ref('Ini Notif');
+
+function showNotif(m){
+  messege.value = m;
+  notifClass.value = 'notif-show';
+  setTimeout(()=>{
+    notifClass.value = 'notif-hide';
+  }, 3000);
+}
 
 </script>
 
@@ -134,7 +193,7 @@ let showComplatedTask = ref(true);
 
         <h1>Tugasku</h1>
         <div class="header-icons">
-          <i class="bi bi-plus" title="Tambah Tugas Baru"></i>
+          <i @click="addTaskFocus" class="bi bi-plus" title="Tambah Tugas Baru"></i>
         </div>
 
       </div>
@@ -185,11 +244,18 @@ let showComplatedTask = ref(true);
 
     <!-- CREATE UPDATE -->
     <aside class="add-task-section col-12 col-md-3 col-lg-3">
-      <h5>Tambah Tugas Baru</h5>
-      <p></p>
-      <input aria-label="Nama Tugas" placeholder="Nama Tugas" type="text"/>
-      <textarea aria-label="Deskripsi Tugas" placeholder="Deskripsi Tugas"></textarea>
-      <button type="button">Tambahin ke Tugasku</button>
+      <div class="add-task">
+        <p><b>Tambah Tugas Baru</b></p>
+        <input v-model="taskTitle" ref="inputTask" aria-label="Nama Tugas" placeholder="Nama Tugas" type="text" required/>
+        <textarea v-model="taskDescript" aria-label="Deskripsi Tugas" placeholder="Deskripsi Tugas" required></textarea>
+        <button @click="addTask" type="button">Tambahin ke Tugasku</button>
+      </div>
+
+      <div>
+        <div :class="notifClass">
+          <div class="alert alert-secondary text-center" role="alert" v-html="messege"></div>
+        </div>
+      </div>
     </aside>
 
   </div>
