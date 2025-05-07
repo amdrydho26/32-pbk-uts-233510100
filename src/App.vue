@@ -20,6 +20,7 @@ const tasks = ref([
 ])
 
 // CATEGORY
+
 let isAddCat = ref(false);
 let addCatClass = ref('addCat');
 const inCat = useTemplateRef('inputCategory');
@@ -50,7 +51,7 @@ function addCat(){
     activeCategory.value = addCatInput.value;
     showAddCat();
   } else {
-    console.info("Nama Kategori Tidak Boleh Kosong");
+    showNotif(`Nama Kategori Tidak Boleh Kosong.`);
   }
 
 }
@@ -62,9 +63,13 @@ function removeCategory(cat){
       taskDeletedCount++;
     }
   }
+  
   tasks.value = tasks.value.filter((tasks) => tasks.category !== cat.name);
   categories.value = categories.value.filter((categories) => categories !== cat);
+  activeCategory.value = null;
+  console.log(activeCategory.value);
   showNotif(`Berhasil Menghapus Kategori <b>${cat.name}</b>,<br> <b>${taskDeletedCount}</b> Tugas Dihapus`);
+  
 }
 
 // CONNECT TASK & CATEGORY
@@ -102,13 +107,15 @@ function addTask(){
     done: false
   };
   
-  if (taskTitle.value != '' ){
+  if (taskTitle.value == ''){
+    showNotif(`Nama Tugas Tidak Boleh Kosong.`);
+  } else if (activeCategory.value == null) {
+    showNotif(`Pilih Kategori Terlebih Dahulu.`);
+  } else {
     tasks.value.push(data);
     showNotif(`Berhasil Menambah Tugas Baru <b>${taskTitle.value}</b>`);
     taskTitle.value = '';
     taskDescript.value = '';
-  } else {
-    console.info("Nama Tidak Boleh Kosong")
   }
   
 }
@@ -125,6 +132,7 @@ function removeTask(task){
   tasks.value = tasks.value.filter((tasks) => tasks !== task);
   showNotif(`Berhasil Menghapus Sebuah Tugas <b>${task.name}</b>`);
 }
+
 // NOTIF
 
 let notifClass = ref('notif-hide');
